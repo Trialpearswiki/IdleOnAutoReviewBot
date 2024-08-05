@@ -20,7 +20,7 @@ from consts import expectedStackables, greenstack_progressionTiers, card_data, m
     maxCookingTables, getNextESFamilyBreakpoint, expected_talentsDict, colliderStorageLimitList, gamingSuperbitsDict, labJewelsDict, cookingMealDict, \
     labBonusesDict, labChipsDict, maxCookingTables, getNextESFamilyBreakpoint, expected_talentsDict, colliderStorageLimitList, gamingSuperbitsDict, maxNumberOfTerritories, \
     indexFirstTerritoryAssignedPet, territoryNames, slotUnlockWavesList, breedingUpgradesDict, breedingGeneticsList, breedingShinyBonusList, \
-    breedingSpeciesDict, getShinyLevelFromDays, getDaysToNextShinyLevel
+    breedingSpeciesDict, getShinyLevelFromDays, getDaysToNextShinyLevel, statuesDict, statueTypeList, maxCharacters, statueCount
 from utils.text_formatting import kebab, getItemCodeName, getItemDisplayName
 
 def session_singleton(cls):
@@ -1044,6 +1044,24 @@ class Account:
                         "Value": 0
                     }
 
+    def _parse_w1_statues(self):
+        self.statues = {}
+        statueType = safe_loads(self.raw_data.get("StuG"))
+        statueLevels = [0]*statueCount
+
+        for i in range(maxCharacters):
+            statueLevels = zip(statueLevels, [item[0] for item in safe_loads(self.raw_data.get("StatueLevels_" + i))])
+        statueLevels = list(map(max, statueLevels)) 
+
+        for number, statue in statuesDict.items():
+            self.statues[statue["Name"]] = {
+                "Level" : statueLevels[number], 
+                "Type" : statueTypeList[statueType[number]],
+                "Effect": statue["Effect"],
+                "BaseValue": statue["BaseValue"],
+                "Value":  statue["BaseValue"], # Handled in _calculate_w1_statue_multi()
+            }
+
     def _parse_w1_owl(self):
         self.owl = {}
         try:
@@ -2001,6 +2019,12 @@ class Account:
         pass
 
     def _calculate_w1(self):
+        
+        self._calculate_w1_starsigns()
+        self._calculate_w1_statue_multi()
+
+    def _calculate_w1_starsigns(self):
+
         self.star_sign_extras = {
             'SeraphMulti': min(3, 1.1 ** ceil((max(self.all_skills.get('Summoning', [0])) + 1) / 20)),
             'SeraphGoal': min(240, ceilUpToBase(max(self.all_skills.get('Summoning', [0])), 20))
@@ -2029,6 +2053,27 @@ class Account:
         self.star_sign_extras['SilkrodeNanoAdvice'] = Advice(
             label=f"Lab Chip: Silkrode Nanochip: {self.star_sign_extras['SilkrodeNanoEval']}",
             picture_class="silkrode-nanochip")
+
+    def _calculate_w1_statue_multi(self):
+        voodooStatuficationMulti = []
+        for char in self.safe_characters:
+            if char.class_name == "Voidwalker":
+                voodooStatuficationMulti.append(
+                    lavaFunc(
+                        'decay',
+                        char.max_talents_over_books + char.max_talents.get("56", 0),
+                        200,
+                        200
+                    )
+                )
+        voodooStatuficationMulti = 1 + max(voodooStatuficationMulti)
+
+        onyxMulti = 2+0.3*self.sailing['Artifacts'].get('The Onyx Lantern', {}).get('Level', 0)
+
+        for statue in self.statues:
+            if statue.type == "Onyx":
+                self.statues[statue]["Value"] *= onyxMulti
+            self.statues[statue]["Value"] *= voodooStatuficationMulti
 
     def _calculate_w2(self):
         self.vialMasteryMulti = 1 + (self.maxed_vials * .02) if self.rift['VialMastery'] else 1

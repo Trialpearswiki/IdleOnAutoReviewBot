@@ -4,6 +4,9 @@ from utils.text_formatting import getItemDisplayName
 
 logger = get_logger(__name__)
 
+###GENERAL CONSTANTS###
+maxCharacters = 10
+
 ###GENERAL PROGRESSION TIERS###
 combatLevels_progressionTiers = [
     # int tier, int TotalAccountLevel, str TAL reward, int PlayerLevels, str PL reward, str notes
@@ -3445,6 +3448,41 @@ forgeUpgradesDict = {
         "MaxPurchases": 60
     }
 }
+
+statuesDict = {
+0 : {"Name": "Power", "Effect": "Base Damage", "BaseValue": 3, "StatueBarHue": 30,},
+1 : {"Name": "Speed", "Effect": "% Move Speed", "BaseValue": 0.1, "StatueBarHue": 65,},
+2 : {"Name": "Mining", "Effect": "Mining Power", "BaseValue": 0.3, "StatueBarHue": 280,},
+3 : {"Name": "Feasty", "Effect": "% Food Effect", "BaseValue": 1, "StatueBarHue": 320,},
+4 : {"Name": "Health", "Effect": "Base Health", "BaseValue": 3, "StatueBarHue": 0,},
+5 : {"Name": "Kachow", "Effect": "% Crit Damage", "BaseValue": 0.4, "StatueBarHue": -15,},
+6 : {"Name": "Lumberbob", "Effect": "Choppin Power", "BaseValue": 0.3, "StatueBarHue": 90,},
+7 : {"Name": "Thicc_skin", "Effect": "Base Defence", "BaseValue": 1, "StatueBarHue": 210,},
+8 : {"Name": "Oceanman", "Effect": "Fishing Power", "BaseValue": 0.3, "StatueBarHue": 115,},
+9 : {"Name": "Ol_reliable", "Effect": "Catchin Power", "BaseValue": 0.3, "StatueBarHue": 45,},
+10: {"Name": "Exp", "Effect": "% Class EXP", "BaseValue": 0.1, "StatueBarHue": 0,},
+11: {"Name": "Anvil", "Effect": "% Product SPD", "BaseValue": 0.5, "StatueBarHue": 165,},
+12: {"Name": "Cauldron", "Effect": "% Alchemy EXP", "BaseValue": 0.5, "StatueBarHue": 280,},
+13: {"Name": "Beholder", "Effect": "% Crit Chance", "BaseValue": 0.2, "StatueBarHue": 300,},
+14: {"Name": "Bullseye", "Effect": "% Accuracy", "BaseValue": 0.8, "StatueBarHue": 110,},
+15: {"Name": "Box", "Effect": "Trappin Power", "BaseValue": 0.3, "StatueBarHue": 180,},
+16: {"Name": "Twosoul", "Effect": "Worship Power", "BaseValue": 0.3, "StatueBarHue": 260,},
+17: {"Name": "Ehexpee", "Effect": "% Skill EXP", "BaseValue": 0.1, "StatueBarHue": 69,},
+18: {"Name": "Seesaw", "Effect": "% Cons EXP", "BaseValue": 0.5, "StatueBarHue": 13,},
+19: {"Name": "Pecunia", "Effect": "% Coins", "BaseValue": 1, "StatueBarHue": 50,},
+20: {"Name": "Mutton", "Effect": "% Cooking EXP", "BaseValue": 0.3, "StatueBarHue": 0,},
+21: {"Name": "Egg", "Effect": "% Breeding EXP", "BaseValue": 0.4, "StatueBarHue": 25,},
+22: {"Name": "Battleaxe", "Effect": "% Damage", "BaseValue": 0.2, "StatueBarHue": 300,},
+23: {"Name": "Spiral", "Effect": "% Divinity EXP", "BaseValue": 1, "StatueBarHue": 70,},
+24: {"Name": "Boat", "Effect": "% Sailing SPD", "BaseValue": 0.5, "StatueBarHue": 160,},
+25: {"Name": "Compost", "Effect": "% Farming EXP", "BaseValue": 0.4, "StatueBarHue": 75,},
+26: {"Name": "Stealth", "Effect": "% Stealth", "BaseValue": 0.3, "StatueBarHue": 185,},
+27: {"Name": "Essence", "Effect": "% White ESS", "BaseValue": 0.6, "StatueBarHue": 160,},
+}
+
+statueTypeList = ["Normal", "Gold", "Onyx"]
+
+statueCount = 28
 
 ###WORLD 2 CONSTS###
 max_IndexOfVials = 75  # Last verified as of v2.10
